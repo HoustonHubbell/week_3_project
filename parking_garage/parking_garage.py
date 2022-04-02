@@ -15,39 +15,51 @@ class Parking_Garage():
             print("Your ticket number is: " + str(new_ticket))
 
     def pay(self):
-        ticket_number = int(input("What is your ticket number? "))
-        if self.current_tickets[ticket_number] == "unpaid":
-            pay_ticket = input("You need to pay $3. Pay now? y/n ")
-            if pay_ticket.lower() == 'y':
-                self.current_tickets[ticket_number] = "paid"
+        if self.spaces_available < 10:
+            ticket_number = int(input("What is your ticket number? "))
+            while ticket_number < 0 or ticket_number > 10:
+                print("That is not a valid ticket number. Try again:")
+                ticket_number = int(input("What is your ticket number?"))
+            if self.current_tickets[ticket_number] == "unpaid":
+                pay_ticket = input("You need to pay $3. Pay now? y/n ")
+                if pay_ticket.lower() == 'y':
+                    self.current_tickets[ticket_number] = "paid"
+                else:
+                    print("You need to pay for your parking.")
             else:
-                print("You need to pay for your parking.")
+                print("You have already paid")
+            print("Receipt: ")
+            print(self.current_tickets)
+            print("You have 15 minutes to leave. Thanks for your payment.")
         else:
-            print("You have already paid")
-        print("Receipt: ")
-        print(self.current_tickets)
-        print("You have 15 minutes to leave. Thanks for your payment.")
+            print("You cannot pay for a ticket that has not been taken.")
 
         
     def leave_garage(self):
-        ticket_number = int(input("What is your ticket number? "))
-        if self.current_tickets[ticket_number] == "unpaid":
-            pay_ticket = input("You need to pay $3. Pay now? y/n ")
-            if pay_ticket.lower() == 'y':
-                self.current_tickets[ticket_number] = "paid"
+        if self.spaces_available < 10:
+            ticket_number = int(input("What is your ticket number? "))
+            while ticket_number < 0 or ticket_number > 10:
+                print("That is not a valid ticket number. Try again:")
+                ticket_number = int(input("What is your ticket number?"))
+            if self.current_tickets[ticket_number] == "unpaid":
+                pay_ticket = input("You need to pay $3. Pay now? y/n ")
+                if pay_ticket.lower() == 'y':
+                    self.current_tickets[ticket_number] = "paid"
+                    self.spaces_available += 1
+                    self.tickets.append(ticket_number)
+                    del self.current_tickets[ticket_number]
+                    print("Thank you; have a nice day!")
+                else:
+                    print("You need to pay for your parking.")
+            
+            else:
                 self.spaces_available += 1
                 self.tickets.append(ticket_number)
                 del self.current_tickets[ticket_number]
-                print("Thank you; have a nice day!")
-            else:
-                print("You need to pay for your parking.")
-            
+                print("Thank you; come again.")
+            print(self.current_tickets)
         else:
-            self.spaces_available += 1
-            self.tickets.append(ticket_number)
-            del self.current_tickets[ticket_number]
-            print("Thank you; come again.")
-        print(self.current_tickets)
+            print("You cannot leave an empty garage!")
 
 car = Parking_Garage()
 
